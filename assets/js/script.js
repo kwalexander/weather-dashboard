@@ -1,4 +1,4 @@
-// define variables
+// DEFINE VARIABLES
 var apiKey = "0b16f3c77b968f39ae09c648a502a860";
 var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#cityName");
@@ -13,6 +13,7 @@ var lon = "";
 var geoCode = [];
 var cityArray = [];
 
+// FUNCTIONS
 // listen for user's city search from the form
 var submitForm = function (event) {
     event.preventDefault();
@@ -61,12 +62,10 @@ var convertCoordinates = function (cityName, data) {
 
     geoCode.push(lat, lon);
 
-    // console.log(geoCode);
-
     requestWeather(cityName, geoCode);
 };
 
-// use the coordinates to get the weather 
+// use the coordinates to get the current weather 
 var requestWeather = function (cityName, coordinates) {
     var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial";
     fetch(currentWeatherURL).then(function (response) {
@@ -76,15 +75,20 @@ var requestWeather = function (cityName, coordinates) {
             displayCurrentWeather(cityName, weatherData);
         });
     });
+};
 
-    var forecastWeatherURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial";
+https://api.openweathermap.org/data/2.5/forecast/daily?lat=42.3584&lon=-71.0598&cnt=5&appid=0b16f3c77b968f39ae09c648a502a860&units=imperial
+
+var requestForecastWeather = function (cityName, coordinates) {
+    var forecastWeatherURL = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=5" + "&appid=" + apiKey + "&units=imperial";
     fetch(forecastWeatherURL).then(function (response) {
-        response.json().then(function (weatherData) {
+        response.json().then(function (forecastData) {
             // link to display current and forecast here
-            // console.log(forecastWeatherURL);
+            console.log(forecastData);
         });
     });
 };
+
 
 // display city current weather
 var displayCurrentWeather = function (cityName, weatherData) {
@@ -94,7 +98,7 @@ var displayCurrentWeather = function (cityName, weatherData) {
     var cityNameContainer = document.createElement("div");
     var currentCityName = document.createElement("span");
 
-    console.log(weatherData);
+    // console.log(weatherData);
 
     currentCityName.textContent = cityName + " ";
     cityNameContainer.appendChild(currentCityName);
@@ -134,11 +138,16 @@ var displayCurrentWeather = function (cityName, weatherData) {
     humidTitleEl.textContent = humidity;
     humidEl.appendChild(humidTitleEl);
     cityNameContainer.appendChild(humidEl);
-}
+
+    requestForecastWeather();
+};
 
 // display city 5 day forecast
+var displayForecastWeather = function (cityName, forecastData) {
+    var forecastArray = forecastData
+};
 
-// event listeners
+// EVENT LISTENERS
 cityFormEl.addEventListener("submit", submitForm);
 
 // listen for a btn click anywhere in the history container and then rerun the functions
