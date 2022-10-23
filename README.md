@@ -8,7 +8,7 @@ Key features of the application include:
 * list of past searches for easy use over time
 
 # Screenshot
-Application screenshot ![here](.assets/images/weather_screenshot.png?raw=true "here")
+Application screenshot ![here](assets/images/weather-screenshot.png?raw=true "here")
 
 # Links
 The deployed application can be viewed here: https://kwalexander.github.io/weather-dashboard/ 
