@@ -26,9 +26,7 @@ var startSearch = function (searchCityName) {
 
     // get lat long geocode from open weather api
     var getCityCoordinate = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCityName + "&appid=" + apiKey;
-
     // console.log(getCityCoordinate);
-
     fetch(getCityCoordinate).then(function (response) {
 
         if (response.ok) {
@@ -65,26 +63,21 @@ var convertCoordinates = function (cityName, data) {
     requestWeather(cityName, geoCode);
 };
 
-// use the coordinates to get the current weather 
+// use the coordinates to get the current and forecast weather as needed
 var requestWeather = function (cityName, coordinates) {
     var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial";
     fetch(currentWeatherURL).then(function (response) {
         response.json().then(function (weatherData) {
-            // link to display current and forecast here
-            // console.log(currentWeatherURL);
             displayCurrentWeather(cityName, weatherData);
         });
     });
 };
 
-https://api.openweathermap.org/data/2.5/forecast/daily?lat=42.3584&lon=-71.0598&cnt=5&appid=0b16f3c77b968f39ae09c648a502a860&units=imperial
-
 var requestForecastWeather = function (cityName, coordinates) {
-    var forecastWeatherURL = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=5" + "&appid=" + apiKey + "&units=imperial";
+    var forecastWeatherURL = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly" + "&appid=" + apiKey + "&units=imperial";
     fetch(forecastWeatherURL).then(function (response) {
         response.json().then(function (forecastData) {
-            // link to display current and forecast here
-            console.log(forecastData);
+            displayForecastWeather(cityName, forecastData);
         });
     });
 };
@@ -142,9 +135,51 @@ var displayCurrentWeather = function (cityName, weatherData) {
     requestForecastWeather();
 };
 
-// display city 5 day forecast
+// display the 5 day forecast weather
 var displayForecastWeather = function (cityName, forecastData) {
-    var forecastArray = forecastData
+    var forecastArray = forecastData.daily;
+
+    var forecastTitle = document.createElement("h3");
+    forecastTitle.textContent = "5 day forecast";
+    forecastEl.appendChild(forecastTitle);
+
+    // console.log(forecastData.daily);
+
+    // loop to split forecast data array out into daily cards
+    for (var i = 1; i < 6; i++) {
+        var forecastCard = document.createElement("div");
+        var forecastCard = document.createElement("h4");
+        forecastEl.appendChild(forecastCard);
+
+        // note refactor this to use current date forecast
+        var forecastDate = document.createElement("span");
+        var forecastDate = new Date();
+        var dd = String(forecastDate.getDate() + i).padStart(2, '0');
+        var mm = String(forecastDate.getMonth() + 1).padStart(2, '0');
+        var yyyy = forecastDate.getFullYear();
+        forecastDate = mm + '/' + dd + '/' + yyyy;
+        forecastCard.textContent = forecastDate;
+
+        // console.log(forecastData);
+
+        var forecastWeatherIcon = document.createElement("img");
+        var forecastIconCode = forecastData.daily[i].weather[0].icon;
+        var forecastIconURL = "http://openweathermap.org/img/wn/" + forecastIconCode + "@2x.png";
+        forecastWeatherIcon.setAttribute('src', forecastIconURL);
+        forecastCard.appendChild(forecastWeatherIcon);
+
+        var forecastTempEl = document.createElement("div");
+        forecastTempEl.textContent = "Temp: " + forecastArray[i].temp.day + "°F";
+        forecastCard.appendChild(forecastTempEl);
+
+        var forecastWindEl = document.createElement("div");
+        forecastWindEl.textContent = "Wind: " + forecastArray[i].wind_speed + "MPH";
+        forecastCard.appendChild(forecastWindEl);
+
+        var forecastHumidEl = document.createElement("div");
+        forecastHumidEl.textContent = "Humidity: " + forecastArray[i].humidity + "%";
+        forecastCard.appendChild(forecastHumidEl);
+    }
 };
 
 // EVENT LISTENERS
