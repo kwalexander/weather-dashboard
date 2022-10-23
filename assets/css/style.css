@@ -1,0 +1,47 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+main {
+    margin: auto;
+    width: 98%;
+}
+
+body {
+    background-color: #d3d3d3;
+    font-family: 'Arial', sans-serif;
+}
+
+img {
+    max-width: 55px;
+}
+
+.city-name-container {
+    background-color: dodgerblue;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.search-button {
+    width: 100%;
+    text-align: center;
+}
+
+.today {
+    margin: 5px;
+}
+
+.today-h3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.card-title {
+    padding: 1%;
+}
+
+.mb-3 {
+    padding: 1%;
+}

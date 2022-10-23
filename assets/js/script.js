@@ -48,6 +48,7 @@ var searchHistory = function (cityArray) {
         let cityBtnEl = document.createElement('button')
         searchedCities.appendChild(cityBtnEl);
         cityBtnEl.textContent = cityArray[i];
+        cityBtnEl.className = "search-button";
         cityBtnEl.setAttribute("value", cityArray[i]);
         cityBtnEl.setAttribute('id', 'city-btn')
     }
@@ -89,12 +90,13 @@ var displayCurrentWeather = function (cityName, weatherData) {
 
     // make necessary elements within the current weather div
     var cityNameContainer = document.createElement("div");
-    var currentCityName = document.createElement("span");
+    var currentCityName = document.createElement("h3");
 
     // console.log(weatherData);
 
     currentCityName.textContent = cityName + " ";
     cityNameContainer.appendChild(currentCityName);
+    cityNameContainer.className = "city-name-container";
     todayEl.appendChild(cityNameContainer);
     var currentDate = document.createElement("span");
     //from stackoverflow
@@ -109,6 +111,7 @@ var displayCurrentWeather = function (cityName, weatherData) {
     var todayIconCode = weatherData.weather[0].icon;
     var todayIconURL = "http://openweathermap.org/img/wn/" + todayIconCode + "@2x.png";
     todayWeatherIcon.setAttribute('src', todayIconURL);
+
     cityNameContainer.appendChild(todayWeatherIcon);
 
     var temp = "Temp: " + weatherData.main.temp + "°F";
@@ -141,6 +144,7 @@ var displayForecastWeather = function (cityName, forecastData) {
 
     var forecastTitle = document.createElement("h3");
     forecastTitle.textContent = "5 day forecast";
+    forecastTitle.className = "today-h3";
     forecastEl.appendChild(forecastTitle);
 
     // console.log(forecastData.daily);
@@ -150,9 +154,11 @@ var displayForecastWeather = function (cityName, forecastData) {
         var forecastCard = document.createElement("div");
         var forecastCard = document.createElement("h4");
         forecastEl.appendChild(forecastCard);
+        forecastCard.className = "card text-white col-12 col-md-6 col-lg-2 bg-dark mb-3";
 
         // note refactor this to use current date forecast
         var forecastDate = document.createElement("span");
+        forecastDate.className = "card-title"
         var forecastDate = new Date();
         var dd = String(forecastDate.getDate() + i).padStart(2, '0');
         var mm = String(forecastDate.getMonth() + 1).padStart(2, '0');
@@ -165,19 +171,23 @@ var displayForecastWeather = function (cityName, forecastData) {
         var forecastWeatherIcon = document.createElement("img");
         var forecastIconCode = forecastData.daily[i].weather[0].icon;
         var forecastIconURL = "http://openweathermap.org/img/wn/" + forecastIconCode + "@2x.png";
+        forecastWeatherIcon.className = "mr-3";
         forecastWeatherIcon.setAttribute('src', forecastIconURL);
         forecastCard.appendChild(forecastWeatherIcon);
 
         var forecastTempEl = document.createElement("div");
         forecastTempEl.textContent = "Temp: " + forecastArray[i].temp.day + "°F";
+        forecastTempEl.className = "card-text"
         forecastCard.appendChild(forecastTempEl);
 
         var forecastWindEl = document.createElement("div");
         forecastWindEl.textContent = "Wind: " + forecastArray[i].wind_speed + "MPH";
+        forecastWindEl.className = "card-text"
         forecastCard.appendChild(forecastWindEl);
 
         var forecastHumidEl = document.createElement("div");
         forecastHumidEl.textContent = "Humidity: " + forecastArray[i].humidity + "%";
+        forecastHumidEl.className = "card-text"
         forecastCard.appendChild(forecastHumidEl);
     }
 };
